@@ -1,16 +1,15 @@
 # Homomorphic Encryption with CKKS on the Iris Dataset
 
-> **Note:** Step four is not missing, and this is subject to change. I will plot using matplotlib, but this a semi-finished product
 
 ## Overview
 
-This script demonstrates privacy-preserving analytics using the CKKS (Cheon-Kim-Kim-Song) homomorphic encryption scheme via Microsoft SEAL's Python bindings. It simulates a scenario where Alice holds sensitive data and wants Carol to perform aggregate computations on it without Carol ever seeing the raw values.
+ `ckks.py `demonstrates privacy-preserving analytics using the CKKS (Cheon-Kim-Kim-Song) homomorphic encryption scheme via Microsoft SEAL's Python bindings. It simulates a scenario where Alice holds sensitive data and wants Carol to perform aggregate computations on it without Carol ever seeing the raw values.
 
 The script currently has three phases:
 
-1. **Plaintext baseline**: load the Iris dataset and compute ground-truth statistics for comparison.
-2. **CKKS setup**: configure encryption parameters and generate the necessary keys.
-3. **Encrypted queries**: encrypt each feature column and run sum/average queries entirely on ciphertexts.
+1. Plaintext baseline: load the Iris dataset and compute ground-truth statistics for comparison.
+2. CKKS setup: configure encryption parameters and generate the necessary keys.
+3. Encrypted queries: encrypt each feature column and run sum/average queries entirely on ciphertexts.
 
 ---
 
@@ -27,7 +26,7 @@ The script currently has three phases:
 
 ## Dataset
 
-The script uses the **Iris dataset** from `sklearn.datasets`, which contains 150 rows and 4 numeric features:
+The script uses the Iris dataset from `sklearn.datasets`, which contains 150 rows and 4 numeric features:
 
 - sepal length (cm)
 - sepal width (cm)
@@ -48,7 +47,7 @@ Plaintext ground truths (mean, min, max, sum) are printed at startup for later e
 | Coefficient modulus bits | `[60, 40, 40, 60]` |
 | Slot count | 4096 (half of poly modulus degree) |
 
-> **Note:** These parameters are fixed and must not be changed, as they are calibrated for the depth of operations performed (one `multiply_plain` + one `rescale`).
+> Note: These parameters are fixed and must not be changed, as they are calibrated for the depth of operations performed (one `multiply_plain` + one `rescale`).
 
 ---
 
@@ -85,7 +84,7 @@ Decrypts and decodes a ciphertext, returning only the first `n` slots.
 
 ### `he_sum(cipher, n) → float`
 
-Computes the **homomorphic sum** of the first `n` slots using a rotate-and-add tree reduction (⌈log₂(n)⌉ steps).
+Computes the homomorphic sum of the first `n` slots using a rotate-and-add tree reduction (⌈log₂(n)⌉ steps).
 
 ```
 result = cipher
@@ -110,7 +109,7 @@ he_average = he_sum(cipher, n) / n
 
 Multiplies the ciphertext element-wise by a plaintext mask vector, then rescales and decrypts to compute a weighted dot product. Used for approximate min/max estimation.
 
-> **Note:** True homomorphic min/max requires polynomial approximation and is not implemented in this script. Plaintext min/max values are reported for reference only.
+> Note: True homomorphic min/max requires polynomial approximation and is not implemented in this script. Plaintext min/max values are reported for reference only.
 
 ---
 
@@ -119,9 +118,9 @@ Multiplies the ciphertext element-wise by a plaintext mask vector, then rescales
 For each of the 4 Iris feature columns, the script:
 
 1. Extracts the column as a float array.
-2. **Encrypts** the array into a single ciphertext and records the time.
-3. Runs **`he_sum`** on the ciphertext and records the time and error vs. plaintext.
-4. Runs **`he_average`** on the ciphertext and records the time and error vs. plaintext.
+2. Encrypts the array into a single ciphertext and records the time.
+3. Runs `he_sum` on the ciphertext and records the time and error vs. plaintext.
+4. Runs `he_average` on the ciphertext and records the time and error vs. plaintext.
 5. Appends all results to a summary table.
 
 ---
@@ -158,7 +157,7 @@ Feature: sepal length (cm)
 
 ## Expected Accuracy
 
-CKKS is an **approximate** scheme by design. Errors are a function of the scale and coefficient modulus configuration.
+CKKS is an approximate scheme by design. Errors are a function of the scale and coefficient modulus configuration.
 
 | Metric | Expected Error |
 |---|---|
@@ -173,8 +172,8 @@ These errors are negligible for statistical analytics workloads.
 
 | Party | Role | Data Access |
 |---|---|---|
-| **Alice** | Data owner | Holds plaintext data and secret key |
-| **Carol** | Compute server | Receives only ciphertexts; never sees raw values |
+| Alice | Data owner | Holds plaintext data and secret key |
+| Carol | Compute server | Receives only ciphertexts; never sees raw values |
 
 All computations (`he_sum`, `he_average`) are performed on ciphertexts on Carol's side. Alice sends encrypted data and receives encrypted results, which only she can decrypt.
 
@@ -182,6 +181,6 @@ All computations (`he_sum`, `he_average`) are performed on ciphertexts on Carol'
 
 ## Limitations
 
-- **Min/Max** cannot be computed exactly with CKKS without a polynomial approximation of the comparison function (not implemented here).
-- **Performance** scales with `poly_modulus_degree`; larger degrees improve security but increase latency.
+- Min/Max cannot be computed exactly with CKKS without a polynomial approximation of the comparison function (not implemented here).
+- Performance scales with `poly_modulus_degree`; larger degrees improve security but increase latency.
 - The Galois key set generated by `create_galois_keys()` covers all rotation steps needed for a 150-element rotate-and-add, but generates keys for all possible steps, which is memory-intensive.
