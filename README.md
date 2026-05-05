@@ -4,9 +4,7 @@ A privacy-preserving analytics pipeline built on Microsoft SEAL's CKKS scheme, d
 
 ---
 
-## What This Project Does
-
-This project simulates a two-party scenario where Alice holds sensitive data and wants Carol to run aggregate queries on it, with Carol never seeing the plaintext. Using the CKKS (Cheon-Kim-Kim-Song) homomorphic encryption scheme, all computation happens on ciphertexts.
+This simulates a two-party scenario where Alice holds sensitive data and wants Carol to run aggregate queries on it, with Carol never seeing the plaintext. Using the CKKS (Cheon-Kim-Kim-Song) homomorphic encryption scheme, all computation happens on ciphertexts.
 
 The pipeline has four steps:
 
