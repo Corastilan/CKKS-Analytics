@@ -1,6 +1,6 @@
 # Performance Analysis: CKKS Homomorphic Encryption vs. Plaintext
 
-> **Note:** This is Step 4a of the homomorphic encryption pipeline. It benchmarks encrypted vs. plaintext computation across varying dataset sizes and polynomial degrees, producing a six-panel matplotlib figure (`performance.pdf`) and a raw results CSV (`step4_results.csv`).
+> **Note:** This is Step 4 of the homomorphic encryption pipeline. It benchmarks encrypted vs. plaintext computation across varying dataset sizes and polynomial degrees, producing a six-panel matplotlib figure (`performance.pdf`) and a raw results CSV (`results.csv`).
 
 ## Overview
 
@@ -122,7 +122,7 @@ For each `(poly_degree, n_rows)` pair the script:
 
 ## Output
 
-### CSV: `step4_results.csv`
+### CSV: `results.csv`
 
 One row per `(poly_degree, n_rows)` combination. Columns:
 
