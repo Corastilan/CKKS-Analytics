@@ -32,7 +32,7 @@ Alice encrypts her data and sends ciphertexts to Carol. Carol runs all queries h
 .
 ├── ckks.py                  # Steps 1–3: dataset loading, CKKS setup, encrypted queries
 ├── plaintext_vs_ckks.py     # Step 4: performance benchmark and visualization
-├── docs.md                  # Implementation documentation (Steps 1–3)
+├── HE_with_CKKS.md          # Implementation documentation (Steps 1–3)
 ├── performanceanalysis.md   # Implementation documentation (Step 4)
 ├── results.csv              # Benchmark output (generated on run)
 └── performance.pdf          # Six-panel performance figure (generated on run)
